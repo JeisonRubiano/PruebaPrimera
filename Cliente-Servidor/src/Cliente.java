@@ -14,32 +14,41 @@ public class Cliente {
 
     public Cliente() {
         frame = new JFrame("Cliente");
-        frame.setSize(800, 600);
+        frame.setSize(300, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
 
 
+        
         uploadButton = new JButton("Subir Imagen");
         uploadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Aquí iría la lógica 
+ 
             }
         });
-
-   
         viewImagesButton = new JButton("Ver Imágenes");
         viewImagesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Aquí iría la lógica
+                JPanel colorPanel = new JPanel();
+                colorPanel.setBackground(getRandomColor());
+                colorPanel.setPreferredSize(new Dimension(250, 250)); 
+                colorPanel.setMaximumSize(new Dimension(250, 250));
+                imagesPanel.add(colorPanel);
+                frame.revalidate();
+                frame.repaint();
             }
         });
 
     
-        imagesPanel = new JPanel(new GridLayout(0, 4, 10, 10)); 
+        imagesPanel = new JPanel();
+        imagesPanel.setLayout(new BoxLayout(imagesPanel, BoxLayout.Y_AXIS));
         JScrollPane imagesScrollPane = new JScrollPane(imagesPanel); 
-        imagesScrollPane.setPreferredSize(new Dimension(800, 400)); 
+        imagesScrollPane.setPreferredSize(new Dimension(800, 550)); 
 
    
         frame.setLayout(new GridLayout(2, 1));
@@ -47,7 +56,9 @@ public class Cliente {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonsPanel.add(uploadButton);
         buttonsPanel.add(viewImagesButton);
-        frame.add(buttonsPanel);
+        frame.setLayout(new BorderLayout());
+        frame.add(imagesScrollPane, BorderLayout.CENTER);
+        frame.add(buttonsPanel, BorderLayout.SOUTH);
     }
 
     public void addImage(ImageIcon imageIcon) {
@@ -63,6 +74,9 @@ public class Cliente {
         });
     }
 
+    private Color getRandomColor() {
+        return new Color((int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
+    }
     public static void main(String[] args) {
         Cliente cliente = new Cliente();
         cliente.show();
